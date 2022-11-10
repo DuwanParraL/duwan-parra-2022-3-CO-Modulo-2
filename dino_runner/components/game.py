@@ -1,25 +1,27 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, FONT_STYLE, GAME_OVER, RESET, HEART
 from dino_runner.components.dinosaur import Dinosaur
-from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
+from dino_runner.components.obstacles.obstacle_manager import ObstacleManager 
+
+
 
 class Game:
     def __init__(self):
-        pygame.init()
-        pygame.display.set_caption(TITLE)
-        pygame.display.set_icon(ICON)
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.clock = pygame.time.Clock()
-        self.playing = False
-        self.game_speed = 20
-        self.x_pos_bg = 0
-        self.y_pos_bg = 380
-        self.score = 0
-        self.player = Dinosaur()
-        self.obstacle_manager = ObstacleManager()
-        self.running = False
-        self.death_count = 0
+         pygame.init()
+         pygame.display.set_caption(TITLE)
+         pygame.display.set_icon(ICON)
+         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+         self.clock = pygame.time.Clock()
+         self.playing = False
+         self.game_speed = 20
+         self.x_pos_bg = 0
+         self.y_pos_bg = 380
+         self.score = 0
+         self.player = Dinosaur()
+         self.obstacle_manager = ObstacleManager()
+         self.running = False
+         self.death_count = 0
 
     def execute(self):
         self.running = True
@@ -29,18 +31,16 @@ class Game:
         pygame.display.quit()
         pygame.quit()
 
-
     def run(self):
         # Game loop: events - update - draw
-        self.obstacle_manager.reset_obstacle()
+        self.obstacle_manager.reset_obstacles()
         self.score = 0
-        self.game_speed = 20    
+        self.game_speed = 20
         self.playing = True
         while self.playing:
             self.events()
             self.update()
             self.draw()
-       
 
     def events(self):
         for event in pygame.event.get():
@@ -51,7 +51,7 @@ class Game:
         user_input = pygame.key.get_pressed()
         self.player.update(user_input)
         self.obstacle_manager.update(self)
-        self.uptade_score()
+        self.update_score()
 
     def draw(self):
         self.clock.tick(FPS)
@@ -61,58 +61,61 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         self.draw_score()
         pygame.display.update()
-        pygame.display.flip()   
+        pygame.display.flip()
+
 
     def show_menu(self):
-        self.screen.fill((225, 225, 225))
+        self.screen.fill((255, 255, 255))
         half_screen_height = SCREEN_HEIGHT // 2
-        half_screeen_width = SCREEN_WIDTH //2
+        half_screen_width = SCREEN_WIDTH // 2
 
-        if self.death_count == 0:   
-            font = pygame.font.Font(FONT_STYLE,30)    
-            text = font.render('Press any key to start...', True, (0,0,0))
+        if self.death_count == 0:
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text = font.render("Press any key to start...", True, (198, 54, 54))
             text_rect = text.get_rect()
-            text_rect.center = (half_screeen_width, half_screen_height)
-            self.screen.blit(text,text_rect)
-        
-        elif self.death_count > 0:
-            text = font.render('Press any key to start...', True, (0,0,0))
-            score = font.render("Your score: " + str(score),True,(0,0,0))
-            score_rect = score.get_rect()
-            score_rect.center =  (half_screeen_width, half_screen_height)
-            self.screen.blit(score,score_rect)
-        text_rect = text.get_rect()
-        text_rect.center = (half_screeen_width, half_screen_height)
-        self.screen.blit(text,text_rect)
-        self.screen.blit(self.running[0],(half_screeen_width -20, half_screen_height - 140) )
+            text_rect.center = (half_screen_height+270, half_screen_width-300)
+            self.screen.blit(text, text_rect)
+        else:
+            self.screen.blit(GAME_OVER, (half_screen_height+80, half_screen_width-480))
+            self.screen.blit(RESET, (half_screen_height+230, half_screen_width-420))
+            self.screen.blit(HEART, (half_screen_height+200, half_screen_width-200))
+
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text = font.render("Press any key to start again", True, (198, 54, 54))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_height+270, half_screen_width-300)
+            self.screen.blit(text, text_rect)
+
+            font = pygame.font.Font(FONT_STYLE, 30)
+            text = font.render(f'your score: {self.score}', True, (0, 0, 0))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_height+270, half_screen_width-250)
+            self.screen.blit(text, text_rect)
+            
         pygame.display.update()
-        
+        self.handle_event_on_menu()
+
+    def handle_event_on_menu(self):
         for event in pygame.event.get():
-            if pygame == pygame.QUIT:
+            if event.type == pygame.QUIT:
                 self.running = False
                 self.playing = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
-    show_menu(death_count = 0)
 
-   
-        
-    
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE, 30)
-        text =  font.render (f'score:{self.score}', True, (0,0,0))
+        text = font.render(f'Score: {self.score}', True, (0, 0, 0))
         text_rect = text.get_rect()
-        text_rect.center =(1000,50)
-        self.screen.blit(text,text_rect)
+        text_rect.center = (1000, 50)
+        self.screen.blit(text, text_rect)
 
-    def uptade_score(self):
+    
+
+    def update_score(self):
         self.score += 1
-
-        if self.score % 100 == 0 and self.game_speed < 500:
-            self.game_speed += 5
-
-    def show(self):
-        self.lbl = self.font.render(f'HI self.screen.blit(text,text_rect)')
+        if self.score % 100 == 0 and self.game_speed < 500: self.game_speed += 5 
+     
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
@@ -120,4 +123,6 @@ class Game:
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
-        self.x_pos_bg -= self.game_speed    
+        self.x_pos_bg -= self.game_speed
+    
+
