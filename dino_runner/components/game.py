@@ -104,6 +104,8 @@ class Game:
         if self.score % 100 == 0 and self.game_speed < 500:
             self.game_speed += 5
 
+    def show(self):
+        self.lbl = self.font.render(f'HI self.screen.blit(text,text_rect)')
     def draw_background(self):
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
