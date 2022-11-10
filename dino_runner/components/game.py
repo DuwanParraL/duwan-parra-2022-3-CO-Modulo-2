@@ -74,22 +74,29 @@ class Game:
             text_rect = text.get_rect()
             text_rect.center = (half_screeen_width, half_screen_height)
             self.screen.blit(text,text_rect)
-        else:
-            font = pygame.font.Font(FONT_STYLE,30)    
+        
+        elif self.death_count > 0:
             text = font.render('Press any key to start...', True, (0,0,0))
-            text_rect = text.get_rect()
-            self.screen.blit(ICON,(half_screeen_width -50 , half_screen_height - 140))
-
+            score = font.render("Your score: " + str(score),True,(0,0,0))
+            score_rect = score.get_rect()
+            score_rect.center =  (half_screeen_width, half_screen_height)
+            self.screen.blit(score,score_rect)
+        text_rect = text.get_rect()
+        text_rect.center = (half_screeen_width, half_screen_height)
+        self.screen.blit(text,text_rect)
+        self.screen.blit(self.running[0],(half_screeen_width -20, half_screen_height - 140) )
         pygame.display.update()
-        self.handle_events_on_menu()
-
-    def handle_events_on_menu(self):
+        
         for event in pygame.event.get():
             if pygame == pygame.QUIT:
                 self.running = False
                 self.playing = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
+    show_menu(death_count = 0)
+
+   
+        
     
     def draw_score(self):
         font = pygame.font.Font(FONT_STYLE, 30)
