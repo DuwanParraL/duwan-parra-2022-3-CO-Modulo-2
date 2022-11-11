@@ -16,9 +16,8 @@ class Dinosaur(Sprite):
 
     def __init__(self):
         self.type = DEFAULT_TYPE
-        # self.image = RUNNING[0]
         self.image = RUN_IMG[self.type][0]
-        self.dino_rect = self.image.get_rect() #** debuelve un rectangulo con la imagen
+        self.dino_rect = self.image.get_rect() 
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.dino_rect.w = self.WIDTH_DINO_RUN
@@ -28,14 +27,14 @@ class Dinosaur(Sprite):
         self.dino_run = True
         self.dino_jump = False
         self.dino_ducking = False
-        self.has_power_up = False #? ¿el dino tiene poweerups?
+        self.has_power_up = False 
         self.power_time_up = 0 
 
 
 
     def update(self, user_input): 
         
-        if self.clock >= 2: #para que no se tome dos veces la tecla
+        if self.clock >= 2: 
             if self.dino_run == True:
                 self.run()  
             elif self.dino_jump == True:
