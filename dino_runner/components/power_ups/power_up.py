@@ -3,13 +3,14 @@ from pygame.sprite import Sprite
 from dino_runner.utils.constants import SCREEN_WIDTH
 
 
+
 class PowerUp(Sprite):
-    def __init__(self, image,type):
+    def __init__(self, image, type):
         self.image = image
         self.type = type
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH
-        self.rect.y = randint(125,175)
+        self.rect.y = randint(125, 175)
         self.start_time = 0
         self.width = self.image.get_width()
 
@@ -18,7 +19,5 @@ class PowerUp(Sprite):
         if self.rect.x < -self.width:
             power_ups.pop()
 
-    def draw(self,screen):
-        screen.blit(self.image, self.rect)   
-        
-
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
