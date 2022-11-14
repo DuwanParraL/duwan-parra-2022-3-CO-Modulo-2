@@ -62,6 +62,11 @@ BIRD = [
 ]
 
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
+CLOUD = pygame.transform.scale(CLOUD, (200, 80))
+CLOUD_GROUP = pygame.sprite.Group()
+CLOUD_EVENT = pygame.USEREVENT
+
+
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
 
