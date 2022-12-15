@@ -38,7 +38,6 @@ class Game:
         pygame.quit()
 
     def run(self):
-        # Game loop: events - update - draw
         self.reset_all()
         self.playing = True
         while self.playing:
@@ -78,6 +77,9 @@ class Game:
         
         if self.death_count == 0:
             draw_message('Press any key to restart ...', self.screen)
+        elif self.death_count == 3:
+            False
+            draw_message("you have lost all your lives..", self.screen)
         else:
             draw_message('Press any key to restart ...', self.screen)
             draw_message(f'Your Score: {self.score}', self.screen, pos_y_center = half_screen_height + 50)
@@ -86,7 +88,6 @@ class Game:
             GAMEOVER_RECT = GAMEOVER.get_rect()
             GAMEOVER_RECT.center = (half_screen_width, half_screen_height)
             self.screen.blit(GAMEOVER, (GAMEOVER_RECT.x, GAMEOVER_RECT.y - 100))
-           
 
         pygame.display.update()
         self.handle_events_on_menu()

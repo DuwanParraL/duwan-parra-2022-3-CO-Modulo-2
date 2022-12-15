@@ -17,7 +17,7 @@ class ObstacleManager:
             cactus_type = 'LARGE'
             obstacle = Cactus(cactus_type)
         else:
-            obstacle = Bird()
+            obstacle = Bird()       
         return obstacle
         
     def update(self, game):
@@ -36,7 +36,7 @@ class ObstacleManager:
                     break
                 else:
                     self.obstacles.pop()
-
+    
     def draw(self, screen):
         for obstacle in self.obstacles:
             obstacle.draw(screen)
